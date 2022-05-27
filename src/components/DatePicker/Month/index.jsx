@@ -1,7 +1,8 @@
 import React from 'react';
-import { useMonth } from "@datepicker-react/hooks";
-import { Day } from "../Day";
-import { Box, P, GridBox } from "../../common-components";
+import { useMonth } from '@datepicker-react/hooks';
+import { Day } from '../Day';
+import { Box, P, GridBox } from '../../common-components';
+import uuid from 'react-uuid'
 
 const MonthComponent = ({ year, month, firstDayOfWeek }) => {
     const { days, weekdayLabels, monthLabel } = useMonth({
@@ -24,7 +25,7 @@ const MonthComponent = ({ year, month, firstDayOfWeek }) => {
             </GridBox>
             <GridBox>
                 {days.map((day) => (
-                    <Day date={day.date} key={`${day.dayLabel}${day.date}${Math.random()}`} day={day.dayLabel} />
+                    <Day date={day.date} key={uuid()} day={day.dayLabel} />
                 ))}
             </GridBox>
         </Box>

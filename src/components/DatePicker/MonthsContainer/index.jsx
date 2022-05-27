@@ -4,7 +4,7 @@ import { Month } from '../Month';
 import { DatePickerContext } from '../../../context/DatePickerContext';
 import { month } from '../../../utils/constants/month';
 import { Box, Dropdown, FlexBox } from '../../common-components';
-import { selectRange } from "../../../utils/utils/date-utils";
+import { selectRange } from '../../../utils/utils/date-utils';
 
 const MonthContainerComponent = ({ activeMonths, firstDayOfWeek }, ref) => {
     const {
@@ -28,12 +28,12 @@ const MonthContainerComponent = ({ activeMonths, firstDayOfWeek }, ref) => {
         } else {
             goToPreviousYear(year - targetYear)
         }
-    }, [goToPreviousYear, goToNextYear, mainCalendar]);
+    }, [goToPreviousYear, goToNextYear, mainCalendar, mainCalendar.year]);
 
     const onMonthChange = useCallback((targetMonth) => {
         const { year } = mainCalendar;
         goToDate(new Date(year, targetMonth));
-    }, [goToDate, mainCalendar]);
+    }, [goToDate, mainCalendar, mainCalendar.year]);
 
     return (
         <Box ref={ref}>
