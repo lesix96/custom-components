@@ -1,0 +1,1 @@
+export const DATE_MASK = "MM/DD/YYYY";
