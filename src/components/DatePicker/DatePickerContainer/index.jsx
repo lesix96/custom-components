@@ -4,7 +4,7 @@ import { DatePickerContext } from '../../../context/DatePickerContext';
 import { MonthContainer } from '../MonthsContainer';
 import { DateRangeViewer } from '../DateRangeViewer';
 import { useClickOutside } from '../../../hooks';
-import {Box} from "../../common-components";
+import { Box } from '../../common-components';
 
 const DatePickerContainerComponent = () => {
     const [state, setState] = useState({
