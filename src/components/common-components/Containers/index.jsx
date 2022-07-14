@@ -6,6 +6,7 @@ const Container = styled('div')`
     height: ${p => p.height || 'auto'};
     padding: ${p => p.padding || '0px'};
     margin: ${p => p.margin || '0px'};
+    border: ${p => p.border || 'none'};
 `
 
 export const Box = styled(Container)`

@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { START_DATE, useDatepicker } from "@datepicker-react/hooks";
-import { DatePickerContext } from "../../../context/DatePickerContext";
-import { MonthContainer } from "../MonthsContainer";
-import { DateRangeViewer } from "../DateRangeViewer";
-import { useClickOutside } from "../../../hooks";
+import React, { useCallback, useRef, useState } from 'react';
+import { START_DATE, useDatepicker } from '@datepicker-react/hooks';
+import { DatePickerContext } from '../../../context/DatePickerContext';
+import { MonthContainer } from '../MonthsContainer';
+import { DateRangeViewer } from '../DateRangeViewer';
+import { useClickOutside } from '../../../hooks';
+import {Box} from "../../common-components";
 
 const DatePickerContainerComponent = () => {
     const [state, setState] = useState({
@@ -20,12 +21,6 @@ const DatePickerContainerComponent = () => {
     const openCalendar = useCallback(() => setIsReadyToClose(false), []);
 
     useClickOutside(node, closeCalendar);
-
-    useEffect(() => {
-        if (state.endDate && state.startDate && state.focusedInput) {
-            closeCalendar();
-        }
-    }, [state]);
 
     const handleDateChange = (data) => {
         if (data.focusedInput) {
@@ -85,20 +80,22 @@ const DatePickerContainerComponent = () => {
                 goToDate,
             }}
         >
-            <DateRangeViewer
-                endDate={state.endDate}
-                startDate={state.startDate}
-                onResetDates={onResetDates}
-                onClick={openCalendar}
-            />
-
-            {!isReadyToClose && (
-                <MonthContainer
-                    ref={node}
-                    firstDayOfWeek={firstDayOfWeek}
-                    activeMonths={activeMonths}
+            <Box ref={node}>
+                <DateRangeViewer
+                    endDate={state.endDate}
+                    startDate={state.startDate}
+                    onResetDates={onResetDates}
+                    onClick={openCalendar}
                 />
-            )}
+
+                {!isReadyToClose && (
+                    <MonthContainer
+                        firstDayOfWeek={firstDayOfWeek}
+                        activeMonths={activeMonths}
+                    />
+                )}
+            </Box>
+
         </DatePickerContext.Provider>
     );
 }

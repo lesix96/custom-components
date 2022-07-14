@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useClickOutside } from "../../../hooks";
 
@@ -49,23 +49,29 @@ const DropdownComponent = ({ defaultValue, options, onChange }) => {
     const node = useRef(null);
 
     const onDropdownClose = () => setIsOpen(false);
+
     useClickOutside(node, onDropdownClose);
 
-    const onOptionSelect = (item) => {
-        setSelectedOption(item.label);
+    const onOptionSelect = useCallback((item) => () => {
+        const { label, value } = item;
+        setSelectedOption(label);
         onDropdownClose();
-        onChange(item.value);
-    };
+        onChange(value);
+    }, [onChange]);
 
     return (
         <DropDownContainer>
-            <DropDownHeader onClick={() => setIsOpen(true)} isOpen={isOpen}>{selectedOption}</DropDownHeader>
+            <DropDownHeader onClick={() => setIsOpen(!isOpen)} isOpen={isOpen}>{selectedOption}</DropDownHeader>
             <DropDownListContainer ref={node}>
                 {isOpen && (
                     <DropDownList>
-                        {options.map((item) => (
-                            <ListItem key={item.value} onClick={() => onOptionSelect(item)}>{item.label}</ListItem>
-                        ))}
+                        {options.map((item) => {
+                            const { value, label } = item;
+
+                            return (
+                                <ListItem key={value} onClick={onOptionSelect(item)}>{label}</ListItem>
+                            );
+                        })}
                     </DropDownList>
                 )}
             </DropDownListContainer>

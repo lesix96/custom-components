@@ -1,10 +1,10 @@
 import React from 'react';
-import { Box, Button } from "../../common-components";
-import { DATE_MASK } from "../../../utils/constants/masks";
+import { Box, Button } from '../../common-components';
+import { DATE_MASK } from '../../../utils/constants/masks';
 
 const DateRangeViewerComponent = ({ startDate, endDate, onResetDates, onClick }) => {
     return (
-        <Box width="fit-content" margin="0 auto" onClick={onClick}>
+        <Box width="fit-content" margin="0 auto" onClick={onClick} border="1px solid black" padding="0 0 0 10px">
             {startDate
                 ? startDate.toLocaleDateString('en-US')
                 : DATE_MASK}

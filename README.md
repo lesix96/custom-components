@@ -1,5 +1,6 @@
-To run this project in development mode you should run script
-### `npm start`
+To run this project in development mode you should run scripts
+### `npm install`
+### `npm run start`
 
 Project was built using:
 - React

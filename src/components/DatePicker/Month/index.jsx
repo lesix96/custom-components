@@ -24,9 +24,13 @@ const MonthComponent = ({ year, month, firstDayOfWeek }) => {
                 ))}
             </GridBox>
             <GridBox>
-                {days.map((day) => (
-                    <Day date={day.date} key={uuid()} day={day.dayLabel} />
-                ))}
+                {days.map((day) => {
+                    const { date, dayLabel } = day;
+
+                    return (
+                        <Day date={date} key={uuid()} day={dayLabel}/>
+                    )
+                })}
             </GridBox>
         </Box>
     )

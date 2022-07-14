@@ -6,56 +6,65 @@ import { month } from '../../../utils/constants/month';
 import { Box, Dropdown, FlexBox } from '../../common-components';
 import { selectRange } from '../../../utils/utils/date-utils';
 
-const MonthContainerComponent = ({ activeMonths, firstDayOfWeek }, ref) => {
+const MonthContainerComponent = ({ activeMonths, firstDayOfWeek }) => {
     const {
         goToPreviousYear,
         goToNextYear,
         goToDate,
     } = useContext(DatePickerContext);
 
-    const mainCalendar = useMemo(() => {
-        const [main] = activeMonths;
-        return main;
+    const mainCalendarMonth = useMemo(() => {
+        const [mainCalendar] = activeMonths;
+        const { month } = mainCalendar;
+        return month;
+    }, [activeMonths]);
+
+    const mainCalendarYear = useMemo(() => {
+        const [mainCalendar] = activeMonths;
+        const { year } = mainCalendar;
+        return year;
     }, [activeMonths]);
 
     const years = useMemo(() => selectRange(new Date().getFullYear() - 3, new Date().getFullYear() + 3), []);
     const months = useMemo(() => month.map((item, index) => ({ value: index, label: item })), []);
 
     const onYearChange = useCallback((targetYear) => {
-        const { year } = mainCalendar;
-        if (targetYear > year) {
-            goToNextYear(targetYear - year);
+        if (targetYear > mainCalendarYear) {
+            goToNextYear(targetYear - mainCalendarYear);
         } else {
-            goToPreviousYear(year - targetYear)
+            goToPreviousYear(mainCalendarYear - targetYear)
         }
-    }, [goToPreviousYear, goToNextYear, mainCalendar, mainCalendar.year]);
+    }, [goToPreviousYear, goToNextYear, mainCalendarYear]);
 
     const onMonthChange = useCallback((targetMonth) => {
-        const { year } = mainCalendar;
-        goToDate(new Date(year, targetMonth));
-    }, [goToDate, mainCalendar, mainCalendar.year]);
+        goToDate(new Date(mainCalendarYear, targetMonth));
+    }, [goToDate, mainCalendarYear]);
 
     return (
-        <Box ref={ref}>
+        <Box>
             <MonthNavigation>
                 <FlexBox>
-                    <Dropdown onChange={onYearChange} options={years} defaultValue={mainCalendar.year} />
-                    <Dropdown onChange={onMonthChange} options={months} defaultValue={month[mainCalendar.month]} />
+                    <Dropdown onChange={onYearChange} options={years} defaultValue={mainCalendarYear} />
+                    <Dropdown onChange={onMonthChange} options={months} defaultValue={month?.[mainCalendarMonth]} />
                 </FlexBox>
             </MonthNavigation>
 
             <FlexBox justifyContent='space-around'>
-                {activeMonths.map((month) => (
-                    <Month
-                        key={`${month.year}-${month.month}`}
-                        year={month.year}
-                        month={month.month}
-                        firstDayOfWeek={firstDayOfWeek}
-                    />
-                ))}
+                {activeMonths.map((activeMonth) => {
+                    const { year, month } = activeMonth;
+
+                    return (
+                        <Month
+                            key={`${year}-${month}`}
+                            year={year}
+                            month={month}
+                            firstDayOfWeek={firstDayOfWeek}
+                        />
+                    )
+                })}
             </FlexBox>
         </Box>
     );
 }
 
-export const MonthContainer = React.memo(React.forwardRef(MonthContainerComponent));
+export const MonthContainer = React.memo(MonthContainerComponent);
